@@ -4,13 +4,16 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:fill:products": "aws dynamodb batch-write-item --request-items file://src/mocks/products.json",
+    "db:fill:stocks": "aws dynamodb batch-write-item --request-items file://src/mocks/stocks.json",
+    "db:fill": "npm run db:fill:products && npm run db:fill:stocks"
   },
-  "engines": {
+  "engines": {  
     "node": ">=14.15.0"
   },
   "dependencies": {
-    "@middy/core": "^2.5.3",
+    "@middy/core": "^2.5.3",  
     "@middy/http-json-body-parser": "^2.5.3",
     "@middy/http-cors": "^3.5.0",
     "@middy/http-error-handler": "^3.5.0"
