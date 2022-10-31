@@ -5,15 +5,8 @@ export default {
   events: [
     {
       http: {
-        method: 'get',
-        path: 'products/{id}',
-        request:{
-          parameters:{
-            paths:{
-              id: true
-            }
-          }
-        }
+        method: 'post',
+        path: 'products'
       },
     },
   ],
