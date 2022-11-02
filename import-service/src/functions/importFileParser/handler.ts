@@ -4,6 +4,7 @@ const importFileParser = async (event: S3Event) => {
 
   const S3 = require('aws-sdk/clients/s3');
   const BUCKET = 'import-service-aws-bucket';
+  const csvParser = require('csv-parser');
   const s3 = new S3();
 
   for (const record of event.Records) {
@@ -16,8 +17,8 @@ const importFileParser = async (event: S3Event) => {
     console.log("Streaming File");
     const s3Stream = s3.getObject(params).createReadStream();
 
-    s3Stream.on('data', (row) => {
-      console.log("Parsed Data", row.toString());
+    s3Stream.pipe(csvParser()).on('data', (row) => {
+      console.log("Parsed Data", row);
     }).on('end', () => {
       console.log("Reached End!")
     })

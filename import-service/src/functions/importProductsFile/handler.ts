@@ -11,8 +11,8 @@ const importProductFile: ValidatedEventAPIGatewayProxyEvent<
     const s3 = new S3();
 
     let { name } = event.queryStringParameters;
-    console.log(`uploaded/${name}`);
-    let objectKey = `uploaded/${name}`;
+    console.log(`parsed/${name}`);
+    let objectKey = `parsed/${name}`;
     try {
       let params = {
         Bucket: BUCKET,
