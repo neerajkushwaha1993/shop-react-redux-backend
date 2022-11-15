@@ -4,7 +4,7 @@ import { Product } from "src/utils/types";
 const { SNS_ARN } = process.env;
 
 export const publish = async (product: Product) => {
-  const sns = new AWS.SNS({ region: "eu-east-1" });
+  const sns = new AWS.SNS({ region: "us-east-1" });
 
   await sns.publish(
     {

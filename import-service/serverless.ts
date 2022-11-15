@@ -22,29 +22,36 @@ const serverlessConfiguration: AWS = {
     region: 'us-east-1',
     iam: {
       role: {
-        statements: [{
-          Effect: "Allow",
-          Action: "s3:GetObject",
-          Resource: "arn:aws:s3:::import-service-aws-bucket"
-        },
-      {
-        Effect: "Allow",
-        Action: "s3:*",
-        Resource: "arn:aws:s3:::import-service-aws-bucket/*"
-      },
-      {
-        Effect: 'Allow',
-        Action: 'sqs:*',
-        Resource: 'arn:aws:sqs:us-east-1:691449872622:catalogItemsQueue',
-      },
-    ],
+        statements: [
+          {
+            Effect: "Allow",
+            Action: "s3:ListBucket",
+            Resource: "arn:aws:s3:::import-service-aws-bucket"
+          },
+          {
+            Effect: "Allow",
+            Action: ["s3:GetObject", "s3:PutObject","s3:DeleteObject"],
+            Resource: "arn:aws:s3:::import-service-aws-bucket"
+          },
+          {
+            Effect: "Allow",
+            Action: "s3:*",
+            Resource: "arn:aws:s3:::import-service-aws-bucket/*"
+          },
+          {
+            Effect: 'Allow',
+            Action: 'sqs:*',
+            Resource: 'arn:aws:sqs:us-east-1:691449872622:catalogItemsQueue',
+          },
+        ],
       },
     }
   },
   // import the function via paths
-  functions: { 
-    importFileParser:{...importFileParser}, 
-    importProductsFile},
+  functions: {
+    importFileParser: { ...importFileParser },
+    importProductsFile
+  },
 
   package: { individually: true },
   custom: {
