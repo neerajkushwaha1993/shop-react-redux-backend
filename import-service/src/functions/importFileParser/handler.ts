@@ -6,8 +6,8 @@ const importFileParser = async (event: S3Event) => {
   const S3 = require('aws-sdk/clients/s3');
   const BUCKET = 'import-service-aws-bucket';
   const csvParser = require('csv-parser');
-  const s3 = new S3();
-  const sqs = new AWS.SQS({ region: 'eu-east-1' });
+  const s3 = new S3({ region: 'us-east-1' });
+  const sqs = new AWS.SQS({ region: 'us-east-1' });
 
   for (const record of event.Records) {
 
@@ -35,7 +35,9 @@ const importFileParser = async (event: S3Event) => {
     })
 
     // Copy object and delete object
-    console.log("Copying file");
+    console.log("Copying file",record.s3.object.key);
+    const fileName=record.s3.object.key.split('/').pop();
+    console.log("file name",fileName);
     await s3.copyObject({
       Bucket: BUCKET,
       CopySource: BUCKET + '/' + record.s3.object.key,
@@ -45,7 +47,7 @@ const importFileParser = async (event: S3Event) => {
     console.log("Deleting file");
     await s3.deleteObject({
       Bucket: BUCKET,
-      Key: record.s3.object.key
+      Key: `parsed/${fileName}`
     }).promise();
 
     console.log('Parsed file' + record.s3.object.key.split('/')[1] + 'is created')

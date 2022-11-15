@@ -8,22 +8,22 @@ const importProductFile: ValidatedEventAPIGatewayProxyEvent<
   typeof schema> = async (event) => {
     const S3 = require('aws-sdk/clients/s3');
     const BUCKET = 'import-service-aws-bucket';
-    const s3 = new S3();
+    const s3 = new S3({ region: 'us-east-1' });
 
     let { name } = event.queryStringParameters;
-    console.log(`parsed/${name}`);
-    let objectKey = `parsed/${name}`;
+    console.log(`uploaded/${name}`);
+    let objectKey = `uploaded/${name}`;
     try {
       let params = {
         Bucket: BUCKET,
         Key: objectKey,
         Expires: 100
       }
-      const signedUrl = s3.getSignedUrl('getObject', params);
+      const signedUrl = s3.getSignedUrlPromise('putObject', params);
       return {
         statusCode: 200,
         headers: DEFAULT_HEADERS,
-        body: JSON.stringify(signedUrl)
+        body: signedUrl
       }
     }
     catch (error) {
